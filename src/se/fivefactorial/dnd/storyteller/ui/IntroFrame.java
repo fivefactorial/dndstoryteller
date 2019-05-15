@@ -5,8 +5,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,22 +13,18 @@ import se.fivefactorial.dnd.storyteller.model.character.Player;
 import se.fivefactorial.dnd.storyteller.model.story.Story;
 
 @SuppressWarnings("serial")
-public class IntroFrame extends DnDFrame implements MouseMotionListener, MouseListener {
+public class IntroFrame extends DnDFrame {
 
 	private StoryTellerUI ui;
 
 	private Story story;
 
 	private List<String> text;
-	private int mouseX;
-	private int mouseY;
 	private boolean active;
 
 	public IntroFrame(StoryTellerUI ui, Story story) {
 		this.ui = ui;
 		this.story = story;
-		addMouseMotionListener(this);
-		addMouseListener(this);
 		text = new ArrayList<>();
 		text.add("Today you will be running the story called " + story.getTitle() + ".");
 		text.add(
@@ -104,45 +98,7 @@ public class IntroFrame extends DnDFrame implements MouseMotionListener, MouseLi
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		if (active) {
-
 			ui.changeFrame(new SceneFrame(ui, story));
 		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
-		repaint();
 	}
 }

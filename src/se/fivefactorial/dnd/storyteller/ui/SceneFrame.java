@@ -1,17 +1,12 @@
 package se.fivefactorial.dnd.storyteller.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JPanel;
 
 import se.fivefactorial.dnd.storyteller.StoryTeller;
 import se.fivefactorial.dnd.storyteller.model.story.Scene;
@@ -20,22 +15,18 @@ import se.fivefactorial.dnd.storyteller.model.story.link.Link;
 import se.fivefactorial.dnd.storyteller.model.story.reward.Reward;
 
 @SuppressWarnings("serial")
-public class SceneFrame extends DnDFrame implements MouseMotionListener, MouseListener {
+public class SceneFrame extends DnDFrame{
 
 	private StoryTellerUI ui;
 	private Story story;
 	private Scene scene;
 	private Link active;
-	private int mouseX;
-	private int mouseY;
 
 	public SceneFrame(StoryTellerUI ui, Story story) {
 		this.ui = ui;
 		this.story = story;
 		scene = story.getCurrentScene();
 		setBackground(Color.PINK);
-		addMouseMotionListener(this);
-		addMouseListener(this);
 	}
 
 	@Override
@@ -130,18 +121,6 @@ public class SceneFrame extends DnDFrame implements MouseMotionListener, MouseLi
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
-
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
-		repaint();
-	}
-
-	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (active != null) {
 
@@ -160,22 +139,6 @@ public class SceneFrame extends DnDFrame implements MouseMotionListener, MouseLi
 				repaint();
 			}
 		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
 	}
 
 }

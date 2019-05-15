@@ -3,6 +3,7 @@ package se.fivefactorial.dnd.storyteller.ui;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,11 @@ public class EndFrame extends DnDFrame {
 		g.setFont(fontBold);
 		String s = "Until next time...";
 		g.drawString(s, PADDING + textWidth - fmBold.stringWidth(s), y - fmBold.getDescent());
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
 	}
 
 }
