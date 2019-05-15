@@ -1,22 +1,15 @@
 package se.fivefactorial.dnd.storyteller.ui;
 
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.BACKGROUND;
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.FONT;
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.PADDING;
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.TEXT;
-
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import se.fivefactorial.dnd.storyteller.model.story.Story;
 
 @SuppressWarnings("serial")
-public class EndFrame extends JPanel {
+public class EndFrame extends DnDFrame {
 
 	private Story story;
 

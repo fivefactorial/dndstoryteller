@@ -1,11 +1,5 @@
 package se.fivefactorial.dnd.storyteller.ui;
 
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.BACKGROUND;
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.FONT;
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.PADDING;
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.TEXT;
-import static se.fivefactorial.dnd.storyteller.ui.SceneFrame.TEXT_HOVER;
-
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -16,14 +10,12 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import se.fivefactorial.dnd.storyteller.StoryTeller;
 import se.fivefactorial.dnd.storyteller.model.character.Player;
 import se.fivefactorial.dnd.storyteller.model.story.Story;
 
 @SuppressWarnings("serial")
-public class IntroFrame extends JPanel implements MouseMotionListener, MouseListener {
+public class IntroFrame extends DnDFrame implements MouseMotionListener, MouseListener {
 
 	private StoryTellerUI ui;
 

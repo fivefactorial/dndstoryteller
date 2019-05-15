@@ -25,7 +25,6 @@ public class StoryTeller {
 				if (story == null) {
 					System.exit(0);
 				}
-
 				new StoryTellerUI(story);
 			}
 

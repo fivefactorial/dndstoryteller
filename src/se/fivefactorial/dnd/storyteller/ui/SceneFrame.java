@@ -20,13 +20,7 @@ import se.fivefactorial.dnd.storyteller.model.story.link.Link;
 import se.fivefactorial.dnd.storyteller.model.story.reward.Reward;
 
 @SuppressWarnings("serial")
-public class SceneFrame extends JPanel implements MouseMotionListener, MouseListener {
-
-	public static final int PADDING = 20;
-	public static final Font FONT = new Font("Bookman Old Style", Font.PLAIN, 18);
-	public static final Color BACKGROUND = Color.WHITE;
-	public static final Color TEXT = Color.BLACK;
-	public static final Color TEXT_HOVER = Color.RED;
+public class SceneFrame extends DnDFrame implements MouseMotionListener, MouseListener {
 
 	private StoryTellerUI ui;
 	private Story story;
