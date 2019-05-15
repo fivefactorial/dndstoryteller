@@ -1,8 +1,12 @@
-package se.fivefactorial.dnd.storyteller.model;
+package se.fivefactorial.dnd.storyteller.parser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import se.fivefactorial.dnd.storyteller.model.character.Player;
 import se.fivefactorial.dnd.storyteller.model.story.Scene;
@@ -17,7 +21,46 @@ import se.fivefactorial.dnd.storyteller.model.story.reward.Reward;
 
 public class Parser {
 
-	public static Story parse(File file) throws FileNotFoundException {
+	private Settings settings;
+
+	public Parser() throws FileNotFoundException, IOException {
+		this.settings = new Settings();
+	}
+
+	public Story parse() throws FileNotFoundException {
+		Player player = parsePlayer();
+		if (player == null)
+			return null;
+
+		Story story = parseStory();
+		if (story == null)
+			return null;
+
+		story.addPlayer(player);
+		return story;
+	}
+
+	private File getFile(String extensions) {
+		File origin = settings.getLastOpened();
+		JFileChooser fc = new JFileChooser(origin);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("." + extensions, extensions);
+		fc.setFileFilter(filter);
+		int returnVal = fc.showOpenDialog(null);
+
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			settings.setLastOpened(file.getParentFile());
+			return file;
+		} else {
+			return null;
+		}
+	}
+
+	private Story parseStory() throws FileNotFoundException {
+		File file = getFile("story");
+		if (file == null)
+			return null;
+
 		Story story = new Story();
 
 		Scanner scan = new Scanner(file, "UTF-8");
@@ -118,7 +161,11 @@ public class Parser {
 		}
 	}
 
-	public static Player parseCharacter(File file) throws FileNotFoundException {
+	private Player parsePlayer() throws FileNotFoundException {
+		File file = getFile("character");
+		if (file == null)
+			return null;
+
 		Scanner scan = new Scanner(file, "UTF-8");
 
 		String name = scan.nextLine();
