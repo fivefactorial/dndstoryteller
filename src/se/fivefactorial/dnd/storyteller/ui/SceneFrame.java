@@ -15,7 +15,7 @@ import se.fivefactorial.dnd.storyteller.model.story.link.Link;
 import se.fivefactorial.dnd.storyteller.model.story.reward.Reward;
 
 @SuppressWarnings("serial")
-public class SceneFrame extends DnDFrame{
+public class SceneFrame extends DnDFrame {
 
 	private StoryTellerUI ui;
 	private Story story;
@@ -31,10 +31,14 @@ public class SceneFrame extends DnDFrame{
 
 	@Override
 	public void paint(Graphics g) {
-		g.setFont(FONT);
-		g.setColor(BACKGROUND);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		if (BACKGROUND_IMAGE != null) {
+			g.drawImage(BACKGROUND_IMAGE, 0, 0, getWidth(), getHeight(), null);
+		} else {
+			g.setColor(BACKGROUND);
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
 
+		g.setFont(FONT);
 		g.setColor(TEXT);
 		String number = "Scene: " + scene.getNumber();
 		List<String> texts = scene.getText();
@@ -99,25 +103,6 @@ public class SceneFrame extends DnDFrame{
 			g.drawString(text, PADDING, getHeight() - PADDING - fm.getDescent());
 		}
 
-	}
-
-	public static List<String> split(List<String> texts, int width, FontMetrics fm) {
-		ArrayList<String> rows = new ArrayList<>();
-		for (String text : texts) {
-			String[] words = text.split("\\s+");
-			String current = "";
-			for (String word : words) {
-				String temp = (current + " " + word).trim();
-				if (fm.stringWidth(temp) > width) {
-					rows.add(current);
-					current = word;
-				} else {
-					current = temp;
-				}
-			}
-			rows.add(current);
-		}
-		return rows;
 	}
 
 	@Override

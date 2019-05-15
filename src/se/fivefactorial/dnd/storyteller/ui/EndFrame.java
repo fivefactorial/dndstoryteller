@@ -52,7 +52,7 @@ public class EndFrame extends DnDFrame {
 		text.add("Info to the DM:");
 		text.add(story.getPath());
 
-		List<String> rows = SceneFrame.split(text, textWidth, fm);
+		List<String> rows = split(text, textWidth, fm);
 		for (String row : rows) {
 			y += fm.getHeight();
 			g.drawString(row, PADDING, y - fm.getDescent());

@@ -1,6 +1,5 @@
 package se.fivefactorial.dnd.storyteller.ui;
 
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -35,24 +34,27 @@ public class IntroFrame extends DnDFrame {
 
 	@Override
 	public void paint(Graphics g) {
-		g.setColor(BACKGROUND);
-		g.fillRect(0, 0, getWidth(), getHeight());
+
+		if (BACKGROUND_IMAGE != null) {
+			g.drawImage(BACKGROUND_IMAGE, 0, 0, getWidth(), getHeight(), null);
+		} else {
+			g.setColor(BACKGROUND);
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
+
 		g.setColor(TEXT);
-
-		Font fontBold = new Font(FONT.getName(), Font.BOLD, FONT.getSize());
-
 		int y = PADDING;
 		FontMetrics fm = g.getFontMetrics(FONT);
-		FontMetrics fmBold = g.getFontMetrics(fontBold);
+		FontMetrics fmBold = g.getFontMetrics(FONT_BOLD);
 
 		int textWidth = getWidth() - 2 * PADDING;
 
-		g.setFont(fontBold);
+		g.setFont(FONT_BOLD);
 		y += fmBold.getHeight();
 		g.drawString("Welcome to the D&D Storyteller", PADDING, y - fmBold.getDescent());
 
 		g.setFont(FONT);
-		List<String> rows = SceneFrame.split(text, textWidth, fm);
+		List<String> rows = split(text, textWidth, fm);
 
 		for (String row : rows) {
 			y += fm.getHeight();
@@ -69,7 +71,7 @@ public class IntroFrame extends DnDFrame {
 		y += fm.getHeight();
 		g.drawString(player.getStatsString(), PADDING, y - fm.getDescent());
 
-		List<String> skills = SceneFrame.split(player.getProficiencies(), textWidth, fm);
+		List<String> skills = split(player.getProficiencies(), textWidth, fm);
 		for (String skill : skills) {
 			y += fm.getHeight();
 			g.drawString(skill, PADDING, y - fm.getDescent());
