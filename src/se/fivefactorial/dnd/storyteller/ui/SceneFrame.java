@@ -1,6 +1,7 @@
 package se.fivefactorial.dnd.storyteller.ui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -69,6 +70,7 @@ public class SceneFrame extends DnDFrame {
 			Link active = null;
 			String before = "- ";
 			int linkWidth = textWidth - fm.stringWidth(before);
+			boolean hover = false;
 			for (Link link : scene.getLinks()) {
 				g.setColor(TEXT);
 				List<String> text = new ArrayList<>();
@@ -84,6 +86,8 @@ public class SceneFrame extends DnDFrame {
 				if (r.contains(mouseX, mouseY)) {
 					active = link;
 					g.setColor(TEXT_HOVER);
+					hover = true;
+					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
 				g.drawString(before, PADDING, y + fm.getHeight() - fm.getDescent());
 				for (String t : text) {
@@ -93,6 +97,9 @@ public class SceneFrame extends DnDFrame {
 				if (StoryTeller.debug) {
 					g.drawRect(r.x, r.y, r.width, r.height);
 				}
+			}
+			if (!hover) {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 			this.active = active;
 		}

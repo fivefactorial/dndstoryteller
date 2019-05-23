@@ -1,5 +1,6 @@
 package se.fivefactorial.dnd.storyteller.ui;
 
+import java.awt.Cursor;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -83,9 +84,11 @@ public class IntroFrame extends DnDFrame {
 		if (r.contains(mouseX, mouseY)) {
 			g.setColor(TEXT_HOVER);
 			active = true;
+			setCursor(new Cursor(Cursor.HAND_CURSOR));
 		} else {
 			g.setColor(TEXT);
 			active = false;
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 		if (StoryTeller.debug) {
 			g.drawRect(r.x, r.y, r.width, r.height);
