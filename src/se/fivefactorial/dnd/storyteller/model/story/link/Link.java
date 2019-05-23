@@ -1,6 +1,7 @@
 package se.fivefactorial.dnd.storyteller.model.story.link;
 
 import se.fivefactorial.dnd.storyteller.StoryTeller;
+import se.fivefactorial.dnd.storyteller.model.character.Player;
 
 public class Link {
 
@@ -28,6 +29,10 @@ public class Link {
 
 	public int getTo() {
 		return to;
+	}
+
+	public boolean show(Player player) {
+		return true;
 	}
 
 }

@@ -3,6 +3,7 @@ package se.fivefactorial.dnd.storyteller.model.story;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.fivefactorial.dnd.storyteller.model.character.Player;
 import se.fivefactorial.dnd.storyteller.model.story.link.Link;
 import se.fivefactorial.dnd.storyteller.model.story.reward.Reward;
 
@@ -12,12 +13,14 @@ public class Scene {
 	private ArrayList<String> texts;
 	private ArrayList<Link> links;
 	private ArrayList<Reward> rewards;
+	private ArrayList<String> tokens;
 
 	public Scene(int n) {
 		this.n = n;
 		texts = new ArrayList<>();
 		links = new ArrayList<>();
 		rewards = new ArrayList<>();
+		tokens = new ArrayList<>();
 	}
 
 	public void addText(String text) {
@@ -52,12 +55,25 @@ public class Scene {
 		return texts;
 	}
 
-	public List<Link> getLinks() {
+	public List<Link> getLinks(Player player) {
+		List<Link> links = new ArrayList<>();
+		for (Link link : this.links) {
+			if (link.show(player))
+				links.add(link);
+		}
 		return links;
 	}
 
 	public List<Reward> getRewards() {
 		return rewards;
+	}
+
+	public void addToken(String token) {
+		tokens.add(token);
+	}
+
+	public List<String> getTokens() {
+		return tokens;
 	}
 
 }

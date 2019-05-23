@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -12,6 +14,7 @@ import se.fivefactorial.dnd.storyteller.model.character.Player;
 import se.fivefactorial.dnd.storyteller.model.story.Scene;
 import se.fivefactorial.dnd.storyteller.model.story.Story;
 import se.fivefactorial.dnd.storyteller.model.story.link.CheckLink;
+import se.fivefactorial.dnd.storyteller.model.story.link.ConditionalLink;
 import se.fivefactorial.dnd.storyteller.model.story.link.EndLink;
 import se.fivefactorial.dnd.storyteller.model.story.link.Link;
 import se.fivefactorial.dnd.storyteller.model.story.reward.ExpReward;
@@ -74,68 +77,32 @@ public class Parser {
 					continue;
 				switch (line.charAt(0)) {
 				case '@':
-					String title = line.substring(1).trim();
+					String title = parseTitle(line);
 					story.setTitle(title);
 					break;
 				case '&':
-					int beginIndex = Integer.parseInt(line.substring(1).trim());
+					int beginIndex = parseBeginIndex(line);
 					story.setBeginIndex(beginIndex);
 					break;
 				case '#':
 					if (scene != null) {
 						story.addScene(scene);
 					}
-					scene = new Scene(Integer.parseInt(line.substring(1).trim()));
+					scene = parseScene(line);
 					break;
 				case '-':
-					String data = line.substring(1).trim();
-					if (data.equals("!")) {
-						scene.addLink(new EndLink());
-					} else {
-						switch (data.charAt(data.length() - 1)) {
-						case ']': {
-							String[] temp = data.split("[\\[\\]]");
-							String text = temp[0].trim();
-							int to = Integer.parseInt(temp[1]);
-							Link link = new Link(text, to);
-							scene.addLink(link);
-						}
-							break;
-						case '}': {
-							String[] temp = data.split("[\\{\\}]");
-							String text = temp[0].trim();
-
-							String[] condition = temp[1].split(",");
-							String check = condition[0];
-							int dc = Integer.parseInt(condition[1]);
-							int sucess = Integer.parseInt(condition[2]);
-							int fail = Integer.parseInt(condition[3]);
-
-							Link link = new CheckLink(story, text, check, dc, sucess, fail);
-							scene.addLink(link);
-						}
-							break;
-						default:
-							System.out.printf("Error at line %d, illegal character\n", row);
-						}
-					}
+					Link link = parseLink(line, story, row);
+					if (link != null)
+						scene.addLink(link);
 					break;
 				case '+':
-					if (line.endsWith("exp")) {
-						int exp = Integer.parseInt(line.split("\\s+")[1]);
-						Reward reward = new ExpReward(exp);
+					Reward reward = parseReward(line, row);
+					if (reward != null)
 						scene.addReward(reward);
-					} else if (line.endsWith("gp")) {
-						int gold = Integer.parseInt(line.split("\\s+")[1]);
-						Reward reward = new MoneyReward(0, 0, 0, gold, 0);
-						scene.addReward(reward);
-					} else if (line.startsWith("+ other")) {
-						String text = line.substring(8).trim();
-						Reward reward = new OtherReward(text);
-						scene.addReward(reward);
-					} else {
-						System.out.printf("Error at line %d, illegal reward\n", row);
-					}
+					break;
+				case '¤':
+					String token = parseToken(line);
+					scene.addToken(token);
 					break;
 				default:
 					scene.addText(line);
@@ -159,6 +126,84 @@ public class Parser {
 			System.err.println("Story not valid");
 			return null;
 		}
+	}
+
+	private String parseToken(String line) {
+		return line.substring(1).trim();
+	}
+
+	private Reward parseReward(String line, int row) {
+		if (line.endsWith("exp")) {
+			int exp = Integer.parseInt(line.split("\\s+")[1]);
+			return new ExpReward(exp);
+		} else if (line.endsWith("gp")) {
+			int gold = Integer.parseInt(line.split("\\s+")[1]);
+			return new MoneyReward(0, 0, 0, gold, 0);
+		} else if (line.startsWith("+ other")) {
+			String text = line.substring(8).trim();
+			return new OtherReward(text);
+		} else {
+			System.out.printf("Error at line %d, illegal reward\n", row);
+			return null;
+		}
+	}
+
+	private Link parseLink(String line, Story story, int row) {
+		String data = line.substring(1).trim();
+		if (data.equals("!")) {
+			return new EndLink();
+		} else {
+			switch (data.charAt(data.length() - 1)) {
+			case ']': {
+				String[] temp = data.split("[\\[\\]]");
+				String text = temp[0].trim();
+				int to = Integer.parseInt(temp[1]);
+				return new Link(text, to);
+
+			}
+			case '}': {
+				String[] temp = data.split("[\\{\\}]");
+				String text = temp[0].trim();
+
+				String[] condition = temp[1].split(",");
+				String check = condition[0];
+				int dc = Integer.parseInt(condition[1]);
+				int sucess = Integer.parseInt(condition[2]);
+				int fail = Integer.parseInt(condition[3]);
+
+				return new CheckLink(story, text, check, dc, sucess, fail);
+			}
+			case '>': {
+				Pattern pattern = Pattern.compile("(.*?)<(.+?),(.+?),([0-9]+?),([0-9]+?)>");
+				Matcher match = pattern.matcher(data);
+				if (match.find()) {
+					String text = match.group(1);
+					String token = match.group(2);
+					String expression = match.group(3);
+					int val = Integer.parseInt(match.group(4));
+					int to = Integer.parseInt(match.group(5));
+					return new ConditionalLink(text, token, expression,val, to);
+				}
+				return null;
+			}
+			default:
+				System.out.printf("Error at line %d, illegal character\n", row);
+				return null;
+			}
+		}
+	}
+
+	private Scene parseScene(String line) {
+		int n = Integer.parseInt(line.substring(1).trim());
+		return new Scene(n);
+	}
+
+	private int parseBeginIndex(String line) {
+		return Integer.parseInt(line.substring(1).trim());
+	}
+
+	private String parseTitle(String line) {
+		return line.substring(1).trim();
 	}
 
 	private Player parsePlayer() throws FileNotFoundException {

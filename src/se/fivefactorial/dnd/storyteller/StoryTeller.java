@@ -9,7 +9,7 @@ import se.fivefactorial.dnd.storyteller.ui.StoryTellerUI;
 
 public class StoryTeller {
 
-	public static boolean debug = false;
+	public static boolean debug = true;
 	public static boolean compile = false;
 
 	public static void main(String[] args) {

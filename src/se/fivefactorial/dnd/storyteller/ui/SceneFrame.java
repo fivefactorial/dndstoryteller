@@ -71,7 +71,7 @@ public class SceneFrame extends DnDFrame {
 			String before = "- ";
 			int linkWidth = textWidth - fm.stringWidth(before);
 			boolean hover = false;
-			for (Link link : scene.getLinks()) {
+			for (Link link : scene.getLinks(story.getPlayer())) {
 				g.setColor(TEXT);
 				List<String> text = new ArrayList<>();
 				text.add(link.toString());
@@ -119,6 +119,10 @@ public class SceneFrame extends DnDFrame {
 			List<Reward> rewards = scene.getRewards();
 			for (Reward reward : rewards) {
 				reward.apply(story.getPlayer());
+			}
+			
+			for (String token : scene.getTokens()) {
+				story.getPlayer().addToken(token);
 			}
 
 			Scene nextScene = story.swapScene(active.getTo());

@@ -1,6 +1,7 @@
 package se.fivefactorial.dnd.storyteller.model.character;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -22,8 +23,8 @@ public class Player {
 	private int ep;
 	private int gp;
 	private int pp;
-
 	private ArrayList<String> otherRewards;
+	private HashMap<String, Integer> tokens;
 
 	public Player(String name, int prof, int[] stats, int[] profs) {
 		this.name = name;
@@ -34,6 +35,7 @@ public class Player {
 		random = new Random();
 
 		otherRewards = new ArrayList<>();
+		tokens = new HashMap<>();
 	}
 
 	public String getName() {
@@ -158,6 +160,19 @@ public class Player {
 			}
 		}
 		return data;
+	}
+
+	public void addToken(String token) {
+		Integer n = tokens.get(token);
+		if (n == null)
+			n = 0;
+		n++;
+		tokens.put(token,n);
+	}
+	
+	public int getToken(String token) {
+		Integer i = tokens.get(token);
+		return i == null ? 0 : i;
 	}
 
 }
