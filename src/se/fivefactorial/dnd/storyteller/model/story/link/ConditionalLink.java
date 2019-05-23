@@ -32,6 +32,14 @@ public class ConditionalLink extends Link {
 			return val == this.val;
 		case ">":
 			return val > this.val;
+		case "<":
+			return val < this.val;
+		case "!=":
+			return val != this.val;
+		case "<=":
+			return val <= this.val;
+		case ">=":
+			return val >= this.val;
 		}
 
 		return false;
