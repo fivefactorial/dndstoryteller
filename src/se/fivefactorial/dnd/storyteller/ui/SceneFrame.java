@@ -106,6 +106,23 @@ public class SceneFrame extends DnDFrame {
 
 		if (StoryTeller.debug) {
 			FontMetrics fm = g.getFontMetrics();
+			y += fm.getHeight();
+
+			List<String> tokens = scene.getTokens();
+			if (!tokens.isEmpty()) {
+				y += fm.getHeight();
+				g.drawString("Tokens:", PADDING, y - fm.getDescent());
+
+				List<String> rows = split(tokens, textWidth, fm);
+				for (String row : rows) {
+					y += fm.getHeight();
+					g.drawString(row, PADDING, y - fm.getDescent());
+				}
+			}
+		}
+
+		if (StoryTeller.debug) {
+			FontMetrics fm = g.getFontMetrics();
 			String text = String.format("x: %d y: %d active: %s", mouseX, mouseY, active);
 			g.drawString(text, PADDING, getHeight() - PADDING - fm.getDescent());
 		}
@@ -120,7 +137,7 @@ public class SceneFrame extends DnDFrame {
 			for (Reward reward : rewards) {
 				reward.apply(story.getPlayer());
 			}
-			
+
 			for (String token : scene.getTokens()) {
 				story.getPlayer().addToken(token);
 			}

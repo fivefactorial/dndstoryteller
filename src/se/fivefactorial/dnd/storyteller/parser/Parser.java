@@ -56,16 +56,6 @@ public class Parser {
 		}
 		System.out.printf("Could not find any .%s file.\n", extensions);
 		return null;
-		/*
-		 * File origin = settings.getLastOpened(); JFileChooser fc = new
-		 * JFileChooser(origin); FileNameExtensionFilter filter = new
-		 * FileNameExtensionFilter("." + extensions, extensions);
-		 * fc.setFileFilter(filter); int returnVal = fc.showOpenDialog(null);
-		 * 
-		 * if (returnVal == JFileChooser.APPROVE_OPTION) { File file =
-		 * fc.getSelectedFile(); settings.setLastOpened(file.getParentFile());
-		 * return file; } else { return null; }
-		 */
 	}
 
 	private Story parseStory() throws FileNotFoundException {
