@@ -3,7 +3,7 @@ package se.fivefactorial.dnd.storyteller.model.story.link;
 import se.fivefactorial.dnd.storyteller.StoryTeller;
 import se.fivefactorial.dnd.storyteller.model.story.Story;
 
-public class ConditionalLink extends Link {
+public class CheckLink extends Link {
 
 	private Story story;
 	private String check;
@@ -11,7 +11,7 @@ public class ConditionalLink extends Link {
 	private int sucess;
 	private int fail;
 
-	public ConditionalLink(Story story, String text, String check, int dc, int sucess, int fail) {
+	public CheckLink(Story story, String text, String check, int dc, int sucess, int fail) {
 		super(text);
 		this.story = story;
 		this.check = check;

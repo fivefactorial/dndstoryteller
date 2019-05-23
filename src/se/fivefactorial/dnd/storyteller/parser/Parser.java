@@ -11,7 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import se.fivefactorial.dnd.storyteller.model.character.Player;
 import se.fivefactorial.dnd.storyteller.model.story.Scene;
 import se.fivefactorial.dnd.storyteller.model.story.Story;
-import se.fivefactorial.dnd.storyteller.model.story.link.ConditionalLink;
+import se.fivefactorial.dnd.storyteller.model.story.link.CheckLink;
 import se.fivefactorial.dnd.storyteller.model.story.link.EndLink;
 import se.fivefactorial.dnd.storyteller.model.story.link.Link;
 import se.fivefactorial.dnd.storyteller.model.story.reward.ExpReward;
@@ -111,7 +111,7 @@ public class Parser {
 							int sucess = Integer.parseInt(condition[2]);
 							int fail = Integer.parseInt(condition[3]);
 
-							Link link = new ConditionalLink(story, text, check, dc, sucess, fail);
+							Link link = new CheckLink(story, text, check, dc, sucess, fail);
 							scene.addLink(link);
 						}
 							break;
