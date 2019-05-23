@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import se.fivefactorial.dnd.storyteller.model.character.Player;
 import se.fivefactorial.dnd.storyteller.model.story.Scene;
@@ -25,12 +24,16 @@ import se.fivefactorial.dnd.storyteller.model.story.reward.Reward;
 public class Parser {
 
 	private Settings settings;
+	private File folder;
 
 	public Parser() throws FileNotFoundException, IOException {
 		this.settings = new Settings();
 	}
 
 	public Story parse() throws FileNotFoundException {
+		selectFolder();
+		if (folder == null)
+			return null;
 		Player player = parsePlayer();
 		if (player == null)
 			return null;
@@ -39,24 +42,30 @@ public class Parser {
 		if (story == null)
 			return null;
 
+		settings.setLastOpened(folder.getParentFile());
+
 		story.addPlayer(player);
 		return story;
 	}
 
 	private File getFile(String extensions) {
-		File origin = settings.getLastOpened();
-		JFileChooser fc = new JFileChooser(origin);
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("." + extensions, extensions);
-		fc.setFileFilter(filter);
-		int returnVal = fc.showOpenDialog(null);
-
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
-			settings.setLastOpened(file.getParentFile());
-			return file;
-		} else {
-			return null;
+		for (File file : folder.listFiles()) {
+			if (file.getName().endsWith(extensions)) {
+				return file;
+			}
 		}
+		System.out.printf("Could not find any .%s file.\n", extensions);
+		return null;
+		/*
+		 * File origin = settings.getLastOpened(); JFileChooser fc = new
+		 * JFileChooser(origin); FileNameExtensionFilter filter = new
+		 * FileNameExtensionFilter("." + extensions, extensions);
+		 * fc.setFileFilter(filter); int returnVal = fc.showOpenDialog(null);
+		 * 
+		 * if (returnVal == JFileChooser.APPROVE_OPTION) { File file =
+		 * fc.getSelectedFile(); settings.setLastOpened(file.getParentFile());
+		 * return file; } else { return null; }
+		 */
 	}
 
 	private Story parseStory() throws FileNotFoundException {
@@ -182,7 +191,7 @@ public class Parser {
 					String expression = match.group(3);
 					int val = Integer.parseInt(match.group(4));
 					int to = Integer.parseInt(match.group(5));
-					return new ConditionalLink(text, token, expression,val, to);
+					return new ConditionalLink(text, token, expression, val, to);
 				}
 				return null;
 			}
@@ -227,6 +236,17 @@ public class Parser {
 		Player player = new Player(name, prof, stats, profs);
 		scan.close();
 		return player;
+	}
+
+	public void selectFolder() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(settings.getLastOpened());
+		chooser.setDialogTitle("Select folder");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setAcceptAllFileFilterUsed(false);
+		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			folder = chooser.getSelectedFile();
+		}
 	}
 
 }
