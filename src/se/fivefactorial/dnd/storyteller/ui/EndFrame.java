@@ -51,6 +51,7 @@ public class EndFrame extends DnDFrame {
 		text.add("");
 		text.add("Info to the DM:");
 		text.add(story.getPath());
+		text.addAll(story.getPlayer().getTokens());
 
 		List<String> rows = split(text, textWidth, fm);
 		for (String row : rows) {

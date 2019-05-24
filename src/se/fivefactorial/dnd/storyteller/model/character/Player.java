@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import se.fivefactorial.dnd.storyteller.model.story.link.Result;
+
 public class Player {
 
 	public static final String[] SKILLS = new String[] { "Acrobatics", "Animal Handling", "Arcana", "Athletics",
@@ -67,7 +69,7 @@ public class Player {
 		return data;
 	}
 
-	public boolean roll(String check, int dc) {
+	public Result roll(String check, int dc) {
 		int mod = 0;
 		switch (check) {
 		case "Strength":
@@ -106,7 +108,8 @@ public class Player {
 
 		int result = roll + mod;
 		System.out.printf("d20+%d\t%d+%d DC%d", mod, roll, mod, dc);
-		return result >= dc;
+		boolean sucess =result >= dc ;
+		return new Result(roll, mod, check, sucess);
 	}
 
 	public void addExp(int exp) {
@@ -167,12 +170,22 @@ public class Player {
 		if (n == null)
 			n = 0;
 		n++;
-		tokens.put(token,n);
+		tokens.put(token, n);
 	}
-	
+
 	public int getToken(String token) {
 		Integer i = tokens.get(token);
 		return i == null ? 0 : i;
+	}
+
+	public List<String> getTokens() {
+		List<String> tokenData = new ArrayList<>();
+		for (String token : tokens.keySet()) {
+			int n = tokens.get(token);
+			String s = n == 1 ? token : String.format("%d*%s", n, token);
+			tokenData.add(s);
+		}
+		return tokenData;
 	}
 
 }

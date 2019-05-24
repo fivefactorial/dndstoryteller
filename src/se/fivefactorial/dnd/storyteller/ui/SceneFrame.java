@@ -13,6 +13,7 @@ import se.fivefactorial.dnd.storyteller.StoryTeller;
 import se.fivefactorial.dnd.storyteller.model.story.Scene;
 import se.fivefactorial.dnd.storyteller.model.story.Story;
 import se.fivefactorial.dnd.storyteller.model.story.link.Link;
+import se.fivefactorial.dnd.storyteller.model.story.link.Result;
 import se.fivefactorial.dnd.storyteller.model.story.reward.Reward;
 
 @SuppressWarnings("serial")
@@ -49,6 +50,21 @@ public class SceneFrame extends DnDFrame {
 			FontMetrics fm = g.getFontMetrics();
 			y += fm.getHeight();
 			g.drawString(number, PADDING, y - fm.getDescent());
+		}
+
+		Result result = scene.getResult();
+		if (result != null) {
+			Color old = g.getColor();
+			g.setColor(result.isSucess() ? TEXT_GREEN : TEXT_RED);
+			String temp = result.isSucess() ? "Sucess" : "Fail";
+			String text = String.format("%s d20+%d=%d, you rolled %d", temp, result.getMod(), (result.getMod() + result.getRoll()), result.getRoll());
+
+			FontMetrics fm = g.getFontMetrics();
+			y += fm.getHeight();
+			g.drawString(text, PADDING, y - fm.getDescent());
+			y += fm.getHeight();
+
+			g.setColor(old);
 		}
 
 		{
@@ -105,6 +121,7 @@ public class SceneFrame extends DnDFrame {
 		}
 
 		if (StoryTeller.debug) {
+			g.setColor(TEXT);
 			FontMetrics fm = g.getFontMetrics();
 			y += fm.getHeight();
 

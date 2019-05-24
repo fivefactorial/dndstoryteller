@@ -32,6 +32,7 @@ public class Parser {
 
 	public Story parse() throws FileNotFoundException {
 		selectFolder();
+		System.out.println("Parsing files");
 		if (folder == null)
 			return null;
 		Player player = parsePlayer();
@@ -51,6 +52,7 @@ public class Parser {
 	private File getFile(String extensions) {
 		for (File file : folder.listFiles()) {
 			if (file.getName().endsWith(extensions)) {
+				System.out.printf("- %s\n",file.getName());
 				return file;
 			}
 		}

@@ -24,7 +24,9 @@ public abstract class DnDFrame extends JPanel implements MouseMotionListener, Mo
 
 	protected static final Color BACKGROUND = Color.WHITE;
 	protected static final Color TEXT = Color.BLACK;
-	protected static final Color TEXT_HOVER = new Color(150,0,13); //new Color(88,23,13);
+	protected static final Color TEXT_HOVER = new Color(150,0,13);
+	protected static final Color TEXT_RED = Color.RED;
+	protected static final Color TEXT_GREEN = Color.GREEN;
 
 	protected static Image BACKGROUND_IMAGE;
 

@@ -40,7 +40,7 @@ public class Story {
 
 		boolean found = false;
 		for (Scene scene : scenes) {
-			if (!scene.validate())
+			if (!scene.validate(this))
 				return false;
 			if (currentScene == scene.getNumber()) {
 				found = true;
@@ -58,12 +58,7 @@ public class Story {
 	}
 
 	public Scene getCurrentScene() {
-		for (Scene scene : scenes) {
-			if (currentScene == scene.getNumber()) {
-				return scene;
-			}
-		}
-		return null;
+		return getScene(currentScene);
 	}
 
 	public Scene swapScene(int to) {
@@ -83,6 +78,19 @@ public class Story {
 
 	public String getPath() {
 		return path.toString();
+	}
+
+	public boolean hasScene(int n) {
+		return getScene(n) != null;
+	}
+
+	public Scene getScene(int n) {
+		for (Scene scene : scenes) {
+			if (n == scene.getNumber()) {
+				return scene;
+			}
+		}
+		return null;
 	}
 
 }

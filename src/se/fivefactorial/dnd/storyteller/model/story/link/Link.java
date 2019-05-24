@@ -2,6 +2,7 @@ package se.fivefactorial.dnd.storyteller.model.story.link;
 
 import se.fivefactorial.dnd.storyteller.StoryTeller;
 import se.fivefactorial.dnd.storyteller.model.character.Player;
+import se.fivefactorial.dnd.storyteller.model.story.Story;
 
 public class Link {
 
@@ -33,6 +34,16 @@ public class Link {
 
 	public boolean show(Player player) {
 		return true;
+	}
+
+	public boolean validate(int from,Story story) {
+		if (to == -1)
+			return true;
+		if (story.hasScene(to)) {
+			return true;
+		}
+		System.out.printf("Missing scene that %d leads to. Scene %d is missing.\n",from,to);
+		return false;
 	}
 
 }
